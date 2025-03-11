@@ -1,0 +1,1 @@
+# gitops-registry-app
