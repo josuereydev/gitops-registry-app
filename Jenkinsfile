@@ -1,5 +1,6 @@
 pipeline {
-    agent label 'jenkins-agente'
+    agent { label 'jenkins-agente' }  // Corrección en la sintaxis de 'agent'
+
     environment {
         APP_NAME = "register-app-pipeline"
     }
@@ -32,8 +33,9 @@ pipeline {
                    git add deployment.yaml
                    git commit -m "Updated Deployment Manifest"
                 """
-                withCredentials([gitUsernamePassword(credentialsId: 'github', gitToolName: 'Default')]) {
-                  sh "git push https://github.com/josuereydev/gitops-registry-app.git main"
+
+                withCredentials([usernamePassword(credentialsId: 'github', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+                    sh "git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/josuereydev/gitops-registry-app.git main"
                 }
             }
         }
